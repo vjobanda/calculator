@@ -26,6 +26,9 @@ jobs:
         python -m coverage run -m unittest tests/test_calculator.py
         coverage report -m
 
+    - name: Check SonarQube status
+      run: curl -s http://localhost:9000/api/system/status || echo "SonarQube non accessible"
+
     - name: Run sonarqube
       run: |
         docker run --rm \
