@@ -11,27 +11,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Set up python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.9'
-
-    - name: Install dependecies
-      run: | 
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-
     - name: Tests execution
       run: | 
-        python -m coverage run -m unittest tests/test_calculator.py
-        coverage report -m
-
-    - name: Check SonarQube status
-      run: curl -s http://localhost:9000/api/system/status || echo "SonarQube non accessible"
-
-    - name: Run sonarqube
-      run: |
-        docker run --rm \
-            -v $(pwd):/usr/src \
-            sonarsource/sonar-scanner-cli \
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+        docker build --target test-target -t my-calculator-test .
+        docker run --rm my-calculator-test
