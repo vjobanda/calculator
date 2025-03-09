@@ -25,3 +25,10 @@ jobs:
       run: | 
         python -m coverage run -m unittest tests/test_calculator.py
         coverage report -m
+
+    - name: Run sonarqube
+      run: |
+        docker run --rm \
+            -v $(pwd):/usr/src \
+            sonarsource/sonar-scanner-cli \
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
